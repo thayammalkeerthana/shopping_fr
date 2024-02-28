@@ -6,8 +6,8 @@ export const register=(data,props)=>async(dispatch)=>{
   await axios.post('http://localhost:8000/users/register', data)
   .then((response) => {
      dispatch({ type: types.REGISTER_USER_DATA_SUCCESS,payload: response})
-     props.history.push('/')
      alert('Registered Successfully');
+     props.history.push('/')
   })
   .catch(error => {
     dispatch({ type: types.REGISTER_USER_DATA_FAILURE });
