@@ -7,6 +7,7 @@ export const register=(data,props)=>async(dispatch)=>{
   .then((response) => {
      dispatch({ type: types.REGISTER_USER_DATA_SUCCESS,payload: response})
      props.history.push('/')
+     alert('Registered Successfully');
   })
   .catch(error => {
     dispatch({ type: types.REGISTER_USER_DATA_FAILURE });
@@ -48,7 +49,7 @@ export const getRegData=()=>async(dispatch)=>{
 export const getAllProducts=()=>async(dispatch)=>{
   dispatch({ type: types.GET_USER_PRODUCT_REQUEST });
   const authToken=localStorage.getItem('AuthToken')
-    axios.get('http://localhost:8000/member/getAllProduct',{
+    axios.get('http://localhost:8000/product/getAllProduct',{
       headers: {
         'Authorization': 'Bearer ' + authToken
       }
@@ -167,4 +168,20 @@ export const updateProfile=(data,props)=>async(dispatch)=>{
   .catch(error => {
     console.error('Error making PUT request:', error.response ? error.response.data : error.message);
   });
+}
+
+export const getCategoryData=()=>async(dispatch)=>{
+  dispatch({ type: types.GET_CATEGORY_DATA_REQUEST });
+  const authToken=localStorage.getItem('AuthToken')
+    axios.get('http://localhost:8000/category/getCategoryData',{
+      headers: {
+        'Authorization': 'Bearer ' + authToken
+      }
+    })
+      .then((response)=>{
+        dispatch({ type: types.GET_CATEGORY_DATA_SUCCESS,payload:response.data.data});
+      })
+      .catch((err)=>{
+        dispatch({ type: types.GET_CATEGORY_DATA_FAILURE });
+      });
 }

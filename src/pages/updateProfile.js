@@ -9,13 +9,13 @@ const UpdateProfile = (props) => {
     gender: '',
     phoneNo: '',
   });
+
   const get_Reg_Data = useSelector((state) => state.regData)
-
-
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(getRegData())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -50,7 +50,8 @@ const UpdateProfile = (props) => {
       email: FilterRegData.email,
       gender: formData.gender,
       phonenumber: formData.phoneNo,
-      imageurl: formData.image
+      imageurl: formData.image,
+      type:'user'
     }
     dispatch(updateProfile(data,props))
   };
@@ -131,10 +132,11 @@ const UpdateProfile = (props) => {
             onChange={handleChange}
           />
         </div>
-        <div className='d-flex justify-content-center'>
 
+        <div className='d-flex justify-content-center'>
           <button type="submit" className='btn btn-primary'>Update Profile</button>
         </div>
+        
       </form>
     </div>
 

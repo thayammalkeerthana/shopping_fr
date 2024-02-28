@@ -9,6 +9,7 @@ const CartPage = (props) => {
     const cartData = useSelector(state => state.cartData)
     const history = useHistory()
     const dispatch = useDispatch()
+    let getUserID = localStorage.getItem('userID')
 
     useEffect(() => {
         dispatch(getCartData())
@@ -17,6 +18,7 @@ const CartPage = (props) => {
 
     const removeItem = (item) => {
         dispatch(DeleteCartData(item.cartid))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     };
 
     const cartFun_inc = (item) => {
@@ -24,7 +26,9 @@ const CartPage = (props) => {
             "cartId": item.cartid,
             "cartName": item.cartname,
             "price": item.price,
-            "quantity": "1"
+            "carturl": item.carturl,
+            "quantity": "1",
+            "userid": getUserID
         }
         dispatch(addCart(data, props))
     }
@@ -34,18 +38,23 @@ const CartPage = (props) => {
             "cartId": item.cartid,
             "cartName": item.cartname,
             "price": item.price,
-            "quantity": "1"
+            "carturl": item.carturl,
+            "quantity": "1",
+            "userid": getUserID
         }
-        if(item.quantity===1){
-            dispatch(DeleteCartData(item.cartid))
-        }else{
+        if (item.quantity === 1) {
+            dispatch(DeleteCartData(getUserID))
+        } else {
             dispatch(decCart(data))
         }
     }
 
+    let filterCartData = cartData.filter((item) => item.userid === getUserID)
+
     return (
         <div>
             <h2 className='text-center py-4'>Your Shopping Cart</h2>
+
             <table className="table">
                 <thead>
                     <tr>
@@ -57,10 +66,10 @@ const CartPage = (props) => {
                     </tr>
                 </thead>
                 <tbody>
-                   {cartData.sort((a, b) => a.cartid - b.cartid).map((item, inx) => (
+                    {filterCartData.sort((a, b) => a.cartid - b.cartid).map((item, inx) => (
                         <tr key={inx}>
                             <td className="d-flex align-items-center" style={{ marginLeft: '10px' }}>
-                                <img src={'https://source.unsplash.com/1920x1080/?shopping'} alt={item.name} style={{ width: '80px', height: '80px', marginRight: '10px' }} />
+                                <img src={item.carturl} alt={item.name} style={{ width: '80px', height: '80px', marginRight: '10px' }} />
                                 <div style={{ marginLeft: '20px' }}>
                                     <p>{item.cartname}</p>
                                 </div>
@@ -80,9 +89,11 @@ const CartPage = (props) => {
                     ))}
                 </tbody>
             </table>
+
             {cartData.length <= 0 && <div className='text-center my-4'>
-                        <h4>your cart is empty</h4>
-                    </div>}
+                <h4>your cart is empty</h4>
+            </div>}
+
             {cartData.length > 0 && (
                 <div className="text-center mt-4">
                     <button className="btn btn-warning btn-lg btn-block" onClick={() => history.push('/checkout')}>
@@ -90,6 +101,7 @@ const CartPage = (props) => {
                     </button>
                 </div>
             )}
+
         </div>
     );
 };

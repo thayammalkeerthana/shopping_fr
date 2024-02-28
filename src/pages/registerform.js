@@ -4,23 +4,23 @@ import { useDispatch } from 'react-redux';
 import { useHistory, NavLink } from 'react-router-dom';
 
 const RegisterForm = (props) => {
-const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({
     userName: '',
     firstName: '',
-    email:'',
-    password:''
+    email: '',
+    password: ''
   });
-const [formErrors, setFormErrors] = useState({
+  const [formErrors, setFormErrors] = useState({
     userName: '',
     firstName: '',
-    email:'',
-    password:''
+    email: '',
+    password: ''
   });
 
-const dispatch=useDispatch()
-const history=useHistory()
+  const dispatch = useDispatch()
+  const history = useHistory()
 
-const handleInputChange = (e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -29,7 +29,7 @@ const handleInputChange = (e) => {
     validateInput(name, value);
   };
 
-const validateInput = (name, value) => {
+  const validateInput = (name, value) => {
     if (name === 'userName') {
       setFormErrors({
         ...formErrors,
@@ -40,12 +40,12 @@ const validateInput = (name, value) => {
         ...formErrors,
         name: value.trim() === '' ? 'firstName is required' : '',
       });
-    }else if (name === 'email') {
+    } else if (name === 'email') {
       setFormErrors({
         ...formErrors,
         email: !/^\S+@\S+\.\S+$/.test(value) ? 'Invalid email address' : '',
       });
-    }else if (name === 'password') {
+    } else if (name === 'password') {
       setFormErrors({
         ...formErrors,
         name: value.trim() === '' ? 'password is required' : '',
@@ -53,17 +53,20 @@ const validateInput = (name, value) => {
     }
   };
 
-const handleSubmit = (e) => {
-  let restData={"gender":'other',
-  "phoneNumber":'1234567890',
-  "imageurl":'https://tse3.mm.bing.net/th?id=OIP.BkoXurD30qD41Q4pDKvDAAHaGH&pid=Api&P=0&h=180'}
-  console.log("formData",{...formData,...restData});
+  const handleSubmit = (e) => {
+    const randomId = Math.floor(Math.random() * 1000000) + 1;
+    let restData = {
+      "userid": randomId,
+      "gender": 'other',
+      "phoneNumber": '1234567890',
+      "imageurl": 'https://tse3.mm.bing.net/th?id=OIP.BkoXurD30qD41Q4pDKvDAAHaGH&pid=Api&P=0&h=180',
+      "type": 'user'
+    }
     e.preventDefault();
-    dispatch(register({...formData,...restData},props))
-    history.push('/')
-};
+    dispatch(register({ ...formData, ...restData }, props))
+  };
 
-return (
+  return (
     <div className="login-container">
       <div className="login-form-container">
         <img src="/shopping_logo.png" alt="Logo" className="login-logo" />
@@ -73,7 +76,7 @@ return (
             <label htmlFor="userName" className="form-label">
               User Name
             </label>
-           <input
+            <input
               type="text"
               id="userName"
               name="userName"
@@ -95,7 +98,7 @@ return (
               value={formData.firstName}
               onChange={handleInputChange}
               className={`form-control ${formErrors.firstName ? 'is-invalid' : ''}`} />
-              {formErrors.firstName && <div className="invalid-feedback">{formErrors.firstName}</div>}
+            {formErrors.firstName && <div className="invalid-feedback">{formErrors.firstName}</div>}
           </div>
 
           <div className="mb-3">
@@ -103,14 +106,14 @@ return (
               Email
             </label>
             <input
-             type="email"
-             id="email"
-             name="email"
-             value={formData.email}
-             onChange={handleInputChange}
-             className={`form-control ${formErrors.email ? 'is-invalid' : ''}`}
-             />
-             {formErrors.email && <div className="invalid-feedback">{formErrors.email}</div>}
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              className={`form-control ${formErrors.email ? 'is-invalid' : ''}`}
+            />
+            {formErrors.email && <div className="invalid-feedback">{formErrors.email}</div>}
           </div>
 
           <div className="mb-3">
@@ -121,12 +124,13 @@ return (
               type="password"
               id="password"
               name="password"
-             value={formData.password}
-             onChange={handleInputChange}
+              value={formData.password}
+              onChange={handleInputChange}
               className={`form-control ${formErrors.password ? 'is-invalid' : ''}`}
-              />
-              {formErrors.password && <div className="invalid-feedback">{formErrors.password}</div>}
+            />
+            {formErrors.password && <div className="invalid-feedback">{formErrors.password}</div>}
           </div>
+
           <div className='mb-1'>Already have an account ? <NavLink to='/'>Login</NavLink></div>
           <button type="submit" className="btn btn-primary">
             Register

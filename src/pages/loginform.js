@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-// import { useHistory } from 'react-router-dom';
 import { login } from '../redux/action';
-import { NavLink } from 'react-router-dom/cjs/react-router-dom.min';
+import { NavLink } from 'react-router-dom';
 
 
 const LoginForm = (props) => {
@@ -17,8 +16,6 @@ const LoginForm = (props) => {
   });
 
   const dispatch = useDispatch()
-  // const history = useHistory()
-
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -44,9 +41,11 @@ const LoginForm = (props) => {
   };
 
   const handleSubmit = (e) => {
+    let restData = {
+      "type": 'user'
+    }
     e.preventDefault();
-    dispatch(login(formData,props))
-    // history.push('/home')
+    dispatch(login({ ...formData, ...restData }, props))
   };
 
   return (

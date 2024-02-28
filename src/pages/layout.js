@@ -1,10 +1,29 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import DropdownComponent from './dropDown';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCategoryData, getRegData } from '../redux/action';
 
 const Layout = ({ children }) => {
   const history = useHistory()
+  const get_Reg_Data = useSelector((state) => state.regData);
+  const categoryData = useSelector(state => state.categoryData)
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getRegData());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    dispatch(getCategoryData())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const getUserId = localStorage.getItem('userID');
+  const FilterRegData = get_Reg_Data.find((item) => item.userid === getUserId);
+
   return (
     <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
       <header className="text-light" style={{ backgroundColor: '#E7D3EE', display: 'flex', justifyContent: 'space-between' }}>
@@ -13,18 +32,22 @@ const Layout = ({ children }) => {
         </div>
 
         <div className='px-3 d-flex align-items-center' style={{ color: '#9e0ca6' }}>
-          <div className='mx-2' style={{ fontWeight: 'bold', cursor: 'pointer' }} onClick={() => history.push('/lehenga')}>Lehenga</div>
-          <div className='mx-2' style={{ fontWeight: 'bold', cursor: 'pointer' }} onClick={() => history.push('/ethnic')}>Ethnic</div>
-          <div className='mx-2' style={{ fontWeight: 'bold', cursor: 'pointer' }} onClick={() => history.push('/gown')}>Gown</div>
-          <div className='mx-2' style={{ fontWeight: 'bold', cursor: 'pointer' }} onClick={() => history.push('/tradition')}>Tradition</div>
+          <div className='mx-2' style={{ fontWeight: 'bold', cursor: 'pointer' }} onClick={() => history.push(`/trending`)}>All</div>
+          {
+            categoryData?.map((item) => {
+              return (
+                <div className='mx-2' style={{ fontWeight: 'bold', cursor: 'pointer' }} onClick={() => history.push(`/category/${item?.categoryid}`)}>{item?.categoryname}</div>
+              )
+            })
+          }
         </div>
 
         <div className='px-3 d-flex align-items-center'>
           <span className='mx-3' style={{ fontWeight: 'bold', cursor: 'pointer' }} onClick={() => history.push('/home')}>Home</span>
           <span className='mx-2 mb-4' style={{ margin: 'auto', cursor: 'pointer' }}>
-            <img src={'https://tse3.mm.bing.net/th?id=OIP.BkoXurD30qD41Q4pDKvDAAHaGH&pid=Api&P=0&h=180'} className="card-img-top rounded-circle mt-2" alt={'jeans'} style={{ width: '50px', height: '50px' }} />
+            <img src={FilterRegData?.imageurl} className="card-img-top rounded-circle mt-2" alt={'jeans'} style={{ width: '50px', height: '50px' }} />
           </span>
-          <span style={{ margin: 'auto' }}>keerthi</span>
+          <span style={{ margin: 'auto' }}>{FilterRegData?.username}</span>
           <span style={{ margin: 'auto' }}><DropdownComponent /></span>
         </div>
       </header>
