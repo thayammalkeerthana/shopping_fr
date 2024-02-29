@@ -1,6 +1,8 @@
 import axios from 'axios';
 import * as types from './actionType'
 
+let getUserID = localStorage.getItem('userID')
+
 export const register=(data,props)=>async(dispatch)=>{
   dispatch({ type: types.REGISTER_USER_DATA_REQUEST });
   await axios.post('http://localhost:8000/users/register', data)
@@ -73,7 +75,7 @@ export const addCart=(data,props)=>async(dispatch)=>{
   .then((response) => {
      dispatch({ type: types.ADD_CART_DATA_SUCCESS,payload: response});
      if(props?.history?.location?.pathname==='/cart'){
-      dispatch(getCartData())
+      dispatch(getCartData(getUserID))
      }else{
       props.history.push('/cart')
      }
@@ -94,7 +96,7 @@ export const decCart=(data)=>async(dispatch)=>{
   })
   .then((response) => {
      dispatch({ type: types.DELETE_CART_DATA_SUCCESS,payload: response});
-      dispatch(getCartData())
+      dispatch(getCartData(getUserID))
   })
   .catch(error => {
     alert(error?.response?.data?.message);
@@ -102,10 +104,10 @@ export const decCart=(data)=>async(dispatch)=>{
   });
 }
 
-export const getCartData=()=>async(dispatch)=>{
+export const getCartData=(data)=>async(dispatch)=>{
   dispatch({ type: types.GET_CART_DATA_REQUEST });
   const authToken=localStorage.getItem('AuthToken')
-    axios.get('http://localhost:8000/cart/getCartData',{
+    axios.get(`http://localhost:8000/cart/getCartData/${data}`,{
       headers: {
         'Authorization': 'Bearer ' + authToken
       }
@@ -127,7 +129,7 @@ export const DeleteCartData = (data) => async (dispatch) => {
   })
     .then((response)=>{
       if(response.statusText==="OK"){
-        dispatch(getCartData())
+        dispatch(getCartData(getUserID))
       }
     })
     .catch((err)=>{
@@ -135,9 +137,9 @@ export const DeleteCartData = (data) => async (dispatch) => {
     });
 }
 
-export const DeleteCartAllData = (props) => async (dispatch) => {
+export const DeleteCartAllData = (data,props) => async (dispatch) => {
   const authToken=localStorage.getItem('AuthToken')
-  axios.delete(`http://localhost:8000/cart/deleteCartAllData`,{
+  axios.delete(`http://localhost:8000/cart/deleteCartAllData/${data}`,{
     headers: {
       'Authorization': 'Bearer ' + authToken
     }
@@ -184,4 +186,42 @@ export const getCategoryData=()=>async(dispatch)=>{
       .catch((err)=>{
         dispatch({ type: types.GET_CATEGORY_DATA_FAILURE });
       });
+}
+
+export const getCartDetails = (data) => async (dispatch) => {
+  const authToken=localStorage.getItem('AuthToken')
+  dispatch({ type: types.GET_CART_DETAIL_REQUEST});
+  axios.get(`http://localhost:8000/cart/getCartDetail/${data}`,{
+    headers: {
+      'Authorization': 'Bearer ' + authToken
+    }
+  })
+    .then((response)=>{
+      if(response.statusText==="OK"){
+        dispatch({ type: types.GET_CART_DETAIL_SUCCESS,payload:response.data.data});
+      }
+    })
+    .catch((err)=>{
+      console.log("err",err)
+      dispatch({ type: types.GET_CART_DETAIL_FAILURE});
+    });
+}
+
+export const getProductCateory = (data) => async (dispatch) => {
+  const authToken=localStorage.getItem('AuthToken')
+  dispatch({ type: types.GET_CATEGORY_DETAIL_REQUEST});
+  axios.get(`http://localhost:8000/product/getCategoryProduct/${data}`,{
+    headers: {
+      'Authorization': 'Bearer ' + authToken
+    }
+  })
+    .then((response)=>{
+      if(response.statusText==="OK"){
+        dispatch({ type: types.GET_CATEGORY_DETAIL_SUCCESS,payload:response.data.data});
+      }
+    })
+    .catch((err)=>{
+      console.log("err",err)
+      dispatch({ type: types.GET_CATEGORY_DETAIL_FAILURE});
+    });
 }

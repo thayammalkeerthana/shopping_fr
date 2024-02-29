@@ -3,5 +3,7 @@ export const initialState = {
     productData:[],
     cartData:[],
     regData:[],
-    categoryData:[]
+    categoryData:[],
+    cartDetail:[],
+    categoryProductData:[]
 }

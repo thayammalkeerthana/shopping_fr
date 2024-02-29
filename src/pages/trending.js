@@ -26,13 +26,14 @@ const Trending = (props) => {
             "quantity": "1",
             "userid": getUserID,
         }
+        console.log("cart fun data",data);
         dispatch(addCart(data, props))
     }
 
     return (
         <div className="d-flex flex-wrap justify-content-around">
             {productData?.map((item, inx) => (
-                <div className="d-flex flex-wrap ">
+                <div key={inx} className="d-flex flex-wrap ">
                     <div key={item.productid} className="card m-4" style={{ width: '18rem', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.4)' }}>
                         <img src={item.imageurl} className="card-img-top rounded-circle mt-2" alt={'jeans'} style={{ width: '150px', height: '150px', margin: 'auto' }} />
                         <div key={inx} className="card-body text-center">

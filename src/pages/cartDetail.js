@@ -1,32 +1,43 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { getCartDetails } from '../redux/action'
+import { useParams } from 'react-router-dom/cjs/react-router-dom.min'
 
-const CartDetail=()=>{
-    return(
-        <div className="container-fluid">
-        <div className="row">
-          {/* Left side - Product Image */}
-          <div className="col-md-6 p-2">
-            <img
-              src="./shoooping_home_page_img_2.png" 
-              alt="Product"
-              style={{ width: '100%', height: '100%' }}
-            />
-          </div>
+const CartDetail = () => {
+  const getCartData = useSelector(state => state.cartDetail)
+  const dispatch = useDispatch()
+  const params = useParams()
   
-          {/* Right side - Product Details */}
-          <div className="col-md-6 mt-4">
-            <div>
-              <h3>Product Name</h3>
-              <p>Product Description Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              <p>Price: $19.99</p>
-              <p>Quantity: 1</p>
+  useEffect(() => {
+    dispatch(getCartDetails(params.id))
+  }, [])
 
-              <button className="btn btn-danger">Remove from Cart</button>
-            </div>
+  return (
+    <div className="container-fluid">
+      <div className="row">
+        {/* Left side - Product Image */}
+        <div className="col-md-6 p-2">
+          <img
+            src={getCartData[0]?.carturl}
+            alt="Product"
+            style={{ width: '100%', height: '80%' }}
+          />
+        </div>
+
+        {/* Right side - Product Details */}
+        <div className="col-md-6 mt-4">
+          <div>
+            <h3>{getCartData[0]?.cartname}</h3>
+            {/* <p>Product Description Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p> */}
+            <p>Price: ${getCartData[0]?.price}</p>
+            <p>Quantity: {getCartData[0]?.quantity}</p>
+
+            <button className="btn btn-danger">Remove from Cart</button>
           </div>
         </div>
       </div>
-    )
+    </div>
+  )
 }
 export default CartDetail
 

@@ -81,6 +81,24 @@ const reducer = (state = initialState, action) => {
     case 'GET_CATEGORY_DATA_FAILURE':
       return { ...state, loading: false, error: action.payload };
 
+    case 'GET_CART_DETAIL_REQUEST':
+      return { ...state, loading: true, error: null };
+
+    case 'GET_CART_DETAIL_SUCCESS':
+      return { ...state, loading: false, cartDetail: action.payload };
+
+    case 'GET_CART_DETAIL_FAILURE':
+      return { ...state, loading: false, error: action.payload };
+
+    case 'GET_CATEGORY_DETAIL_REQUEST':
+      return { ...state, loading: true, error: null };
+
+    case 'GET_CATEGORY_DETAIL_SUCCESS':
+      return { ...state, loading: false, categoryProductData: action.payload };
+
+    case 'GET_CATEGORY_DETAIL_FAILURE':
+      return { ...state, loading: false, error: action.payload };
+
 
     default:
       return state;

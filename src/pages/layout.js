@@ -34,9 +34,9 @@ const Layout = ({ children }) => {
         <div className='px-3 d-flex align-items-center' style={{ color: '#9e0ca6' }}>
           <div className='mx-2' style={{ fontWeight: 'bold', cursor: 'pointer' }} onClick={() => history.push(`/trending`)}>All</div>
           {
-            categoryData?.map((item) => {
+            categoryData?.map((item,inx) => {
               return (
-                <div className='mx-2' style={{ fontWeight: 'bold', cursor: 'pointer' }} onClick={() => history.push(`/category/${item?.categoryid}`)}>{item?.categoryname}</div>
+                <div key={inx} className='mx-2' style={{ fontWeight: 'bold', cursor: 'pointer' }} onClick={() => history.push(`/category/${item?.categoryid}`)}>{item?.categoryname}</div>
               )
             })
           }

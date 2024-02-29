@@ -27,7 +27,7 @@ function App() {
         <PrivateRoute  path="/checkout" component={CheckoutPage} isAuthenticated={isAuthenticated} />
         <PrivateRoute path='/updateProfile' component={UpdateProfile} isAuthenticated={isAuthenticated}/>
         <PrivateRoute path='/category/:id' component={CategoryDress} isAuthenticated={isAuthenticated}/>
-        <PrivateRoute path='/cartDetail' component={CartDetail} isAuthenticated={isAuthenticated}/>
+        <PrivateRoute path='/cartDetail/:id' component={CartDetail} isAuthenticated={isAuthenticated}/>
         </Layout>
       </Switch>
     </Router>

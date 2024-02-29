@@ -12,7 +12,7 @@ const CartPage = (props) => {
     let getUserID = localStorage.getItem('userID')
 
     useEffect(() => {
-        dispatch(getCartData())
+        dispatch(getCartData(getUserID))
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -30,6 +30,7 @@ const CartPage = (props) => {
             "quantity": "1",
             "userid": getUserID
         }
+        console.log("cart inc data",data);
         dispatch(addCart(data, props))
     }
 
@@ -50,7 +51,10 @@ const CartPage = (props) => {
     }
 
     let filterCartData = cartData.filter((item) => item.userid === getUserID)
-
+    const cartDetailFunc = (item) => {
+        history.push(`/cartDetail/${item.cartid}`)
+    }
+    console.log("cartData.length",cartData,cartData.length);
     return (
         <div>
             <h2 className='text-center py-4'>Your Shopping Cart</h2>
@@ -68,7 +72,7 @@ const CartPage = (props) => {
                 <tbody>
                     {filterCartData.sort((a, b) => a.cartid - b.cartid).map((item, inx) => (
                         <tr key={inx}>
-                            <td className="d-flex align-items-center" style={{ marginLeft: '10px' }}>
+                            <td className="d-flex align-items-center" style={{ marginLeft: '10px' }} onClick={() => cartDetailFunc(item)}>
                                 <img src={item.carturl} alt={item.name} style={{ width: '80px', height: '80px', marginRight: '10px' }} />
                                 <div style={{ marginLeft: '20px' }}>
                                     <p>{item.cartname}</p>

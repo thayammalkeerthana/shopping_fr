@@ -8,9 +8,9 @@ const CheckoutPage = (props) => {
     const [showModal, setShowModal] = useState(false);
     const cartData = useSelector(state => state.cartData)
     const dispatch = useDispatch()
-
+    let getUserID = localStorage.getItem('userID')
     useEffect(() => {
-        dispatch(getCartData())
+        dispatch(getCartData(getUserID))
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -19,7 +19,7 @@ const CheckoutPage = (props) => {
     };
 
     const checkout_Func = () => {
-        dispatch(DeleteCartAllData(props))
+        dispatch(DeleteCartAllData(getUserID,props))
     }
 
     const handleShow = () => setShowModal(true);
