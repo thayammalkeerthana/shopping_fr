@@ -99,6 +99,14 @@ const reducer = (state = initialState, action) => {
     case 'GET_CATEGORY_DETAIL_FAILURE':
       return { ...state, loading: false, error: action.payload };
 
+      case 'SEARCH_DATA_REQUEST':
+        return { ...state, loading: true, error: null };
+  
+      case 'SEARCH_DATA_SUCCESS':
+        return { ...state, loading: false ,productData:action.payload};
+  
+      case 'SEARCH_DATA_FAILURE':
+        return { ...state, loading: false, error: action.payload };
 
     default:
       return state;

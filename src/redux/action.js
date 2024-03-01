@@ -188,6 +188,24 @@ export const getCategoryData=()=>async(dispatch)=>{
       });
 }
 
+export const getSearchData=(data,props)=>async(dispatch)=>{
+  const authToken=localStorage.getItem('AuthToken')
+  dispatch({ type: types.SEARCH_DATA_REQUEST });
+  await axios.post('http://localhost:8000/product/getSearchProduct', data,{
+    headers: {
+      'Authorization': 'Bearer ' + authToken
+    }
+  })
+  .then((response) => {
+    console.log("response",response);
+     dispatch({ type: types.SEARCH_DATA_SUCCESS,payload: response.data.data});
+  })
+  .catch(error => {
+    alert(error?.response?.data?.message);
+    dispatch({ type: types.SEARCH_DATA_FAILURE });
+  });
+}
+
 export const getCartDetails = (data) => async (dispatch) => {
   const authToken=localStorage.getItem('AuthToken')
   dispatch({ type: types.GET_CART_DETAIL_REQUEST});
